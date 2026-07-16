@@ -1,0 +1,1299 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+
+    <title>Emotional Balance</title>
+
+    <script src="d3.min.js"></script>
+
+    <style>
+        html,
+        body {
+
+            margin: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+
+            background: #fafafa;
+
+            font-family: Arial, Helvetica, sans-serif;
+
+        }
+
+        svg {
+
+            width: 100vw;
+            height: 100vh;
+
+        }
+
+        .node circle {
+
+            cursor: pointer;
+
+            stroke: white;
+
+            stroke-width: 2;
+
+        }
+
+        .node text {
+
+            user-select: none;
+
+            font-size: 15px;
+
+            text-anchor: middle;
+
+            pointer-events: none;
+
+        }
+
+        .balance {
+
+            font-size: 42px;
+
+            font-weight: bold;
+
+        }
+
+        .subtitle {
+
+            font-size: 18px;
+            font-weight: bold;
+            fill: #1a1a1a;
+
+        }
+
+        #infoButton{
+
+    position:fixed;
+
+    top:20px;
+
+    right:20px;
+
+    width:42px;
+
+    height:42px;
+
+    border:none;
+
+    border-radius:50%;
+
+    background:#ffffff;
+
+    color:#555;
+
+    font-size:24px;
+
+    cursor:pointer;
+
+    box-shadow:0 2px 8px rgba(0,0,0,.2);
+
+    z-index:1000;
+
+}
+
+    #infoButton:hover{
+
+        background:#f0f0f0;
+
+    }
+
+    #infoDialog{
+
+        position:fixed;
+
+        inset:0;
+
+        background:rgba(0,0,0,.45);
+
+        display:flex;
+
+        align-items:center;
+
+        justify-content:center;
+
+        z-index:2000;
+
+    }
+
+    #infoDialog.hidden{
+
+        display:none;
+
+    }
+
+    .dialog{
+
+        width:min(420px,90vw);
+
+        background:white;
+
+        border-radius:16px;
+
+        padding:24px;
+
+        text-align:left;
+
+        box-shadow:0 10px 40px rgba(0,0,0,.3);
+
+    }
+
+    .dialog h2{
+
+        margin-top:0;
+
+    }
+
+    .dialog button{
+
+    margin-top:20px;
+
+    padding:10px 20px;
+
+    border:none;
+
+    border-radius:8px;
+
+    background:#4a90e2;
+
+    color:white;
+
+    cursor:pointer;
+
+}
+    </style>
+
+</head>
+
+<body>
+
+    <svg id="svg"></svg>
+    <button id="infoButton">ⓘ</button>
+
+    <div id="infoDialog" class="hidden">
+
+        <div class="dialog">
+
+            <h2>About</h2>
+
+            <p>
+                This website is an experimental visualisation of emotions.
+            </p>
+
+            <p>
+                It is intended to encourage personal reflection and curiosity.
+            </p>
+            <p>
+                It explores one possible way of mapping emotions in a visual space. The organisation of emotions and the calculated 'net balance' are experimental and are intended solely to support reflection and exploration.
+            </p>
+            <p>
+                It is <strong>not</strong> a validated psychological assessment,
+                diagnostic tool, or source of medical advice.
+            </p>
+
+            <button id="closeDialog">Close</button>
+
+        </div>
+
+    </div>
+<script>
+
+const data = {
+
+    children: [
+
+        {
+            name: "Joy",
+            score: 1,
+
+            children: [
+
+                {
+                    name: "Happiness",
+                    score: 1,
+
+                    children: [
+                        { name: "Cheerful", score: 1 },
+                        { name: "Glad", score: 1 },
+                        { name: "Delighted", score: 1 },
+                        { name: "Elated", score: 1 },
+                        { name: "Ecstatic", score: 1 },
+                        { name: "Jubilant", score: 1 }
+                    ]
+                },
+
+                {
+                    name: "Contentment",
+                    score: 1,
+
+                    children: [
+                        { name: "Satisfied", score: 1 },
+                        { name: "Fulfilled", score: 1 },
+                        { name: "Comfortable", score: 1 },
+                        { name: "Serene", score: 1 },
+                        { name: "At Ease", score: 1 },
+                        { name: "Relaxed", score: 1 }
+                    ]
+                },
+
+                {
+                    name: "Gratitude",
+                    score: 1,
+
+                    children: [
+                        { name: "Thankful", score: 1 },
+                        { name: "Appreciative", score: 1 },
+                        { name: "Blessed", score: 1 },
+                        { name: "Fortunate", score: 1 },
+                        { name: "Privileged", score: 1 },
+                        { name: "Lucky", score: 1 }
+                    ]
+                },
+
+                {
+                    name: "Excitement",
+                    score: 1,
+
+                    children: [
+                        { name: "Thrilled", score: 1 },
+                        { name: "Exhilarated", score: 1 },
+                        { name: "Energetic", score: 1 },
+                        { name: "Lively", score: 1 },
+                        { name: "Animated", score: 1 },
+                        { name: "Vibrant", score: 1 }
+                    ]
+                },
+
+                {
+                    name: "Playfulness",
+                    score: 1,
+
+                    children: [
+                        { name: "Playful", score: 1 },
+                        { name: "Lighthearted", score: 1 },
+                        { name: "Carefree", score: 1 },
+                        { name: "Mischievous", score: 1 },
+                        { name: "Bubbly", score: 1 },
+                        { name: "Jolly", score: 1 }
+                    ]
+                },
+
+                {
+                    name: "Wonder",
+                    score: 1,
+
+                    children: [
+                        { name: "Awestruck", score: 1 },
+                        { name: "Enchanted", score: 1 },
+                        { name: "Captivated", score: 1 },
+                        { name: "Fascinated", score: 1 },
+                        { name: "Amazed", score: 1 },
+                        { name: "Astonished", score: 1 }
+                    ]
+                },
+
+                {
+                    name: "Triumph",
+                    score: 1,
+
+                    children: [
+                        { name: "Victorious", score: 1 },
+                        { name: "Accomplished", score: 1 },
+                        { name: "Successful", score: 1 },
+                        { name: "Proud", score: 1 },
+                        { name: "Rewarded", score: 1 },
+                        { name: "Satisfied", score: 1 }
+                    ]
+                }
+
+            ]
+        },
+
+        {
+            name: "Surprise",
+            score: 1,
+
+            children: [
+
+                {
+                    name: "Curiosity",
+                    score: 1,
+
+                    children: [
+                        { name: "Curious", score: 1 },
+                        { name: "Interested", score: 1 },
+                        { name: "Inquisitive", score: 1 },
+                        { name: "Intrigued", score: 1 },
+                        { name: "Exploratory", score: 1 },
+                        { name: "Questioning", score: 1 }
+                    ]
+                },
+
+                {
+                    name: "Astonishment",
+                    score: 1,
+
+                    children: [
+                        { name: "Amazed", score: 1 },
+                        { name: "Astonished", score: 1 },
+                        { name: "Astounded", score: 1 },
+                        { name: "Awestruck", score: 1 },
+                        { name: "Impressed", score: 1 },
+                        { name: "Speechless", score: 1 }
+                    ]
+                },
+
+                {
+                    name: "Shock",
+                    score: 1,
+
+                    children: [
+                        { name: "Startled", score: 1 },
+                        { name: "Shocked", score: 1 },
+                        { name: "Stunned", score: 1 },
+                        { name: "Alarmed", score: 1 },
+                        { name: "Jolted", score: 1 },
+                        { name: "Taken Aback", score: 1 }
+                    ]
+                },
+
+                {
+                    name: "Confusion",
+                    score: 1,
+
+                    children: [
+                        { name: "Confused", score: 1 },
+                        { name: "Perplexed", score: 1 },
+                        { name: "Bewildered", score: 1 },
+                        { name: "Puzzled", score: 1 },
+                        { name: "Disoriented", score: 1 },
+                        { name: "Baffled", score: 1 }
+                    ]
+                },
+
+                {
+                    name: "Discovery",
+                    score: 1,
+
+                    children: [
+                        { name: "Enlightened", score: 1 },
+                        { name: "Realizing", score: 1 },
+                        { name: "Revealed", score: 1 },
+                        { name: "Uncovered", score: 1 },
+                        { name: "Inspired", score: 1 },
+                        { name: "Enlightened", score: 1 }
+                    ]
+                }
+
+            ]
+        },
+
+        {
+            name: "Fear",
+            score: -1,
+
+            children: [
+
+                {
+                    name: "Anxiety",
+                    score: -1,
+
+                    children: [
+                        { name: "Anxious", score: -1 },
+                        { name: "Nervous", score: -1 },
+                        { name: "Apprehensive", score: -1 },
+                        { name: "Tense", score: -1 },
+                        { name: "Restless", score: -1 },
+                        { name: "On Edge", score: -1 }
+                    ]
+                },
+
+                {
+                    name: "Worry",
+                    score: -1,
+
+                    children: [
+                        { name: "Worried", score: -1 },
+                        { name: "Concerned", score: -1 },
+                        { name: "Troubled", score: -1 },
+                        { name: "Preoccupied", score: -1 },
+                        { name: "Uncertain", score: -1 },
+                        { name: "Doubtful", score: -1 }
+                    ]
+                },
+
+                {
+                    name: "Insecurity",
+                    score: -1,
+
+                    children: [
+                        { name: "Insecure", score: -1 },
+                        { name: "Self-Conscious", score: -1 },
+                        { name: "Inferior", score: -1 },
+                        { name: "Inadequate", score: -1 },
+                        { name: "Exposed", score: -1 },
+                        { name: "Threatened", score: -1 }
+                    ]
+                },
+
+                {
+                    name: "Vulnerability",
+                    score: -1,
+
+                    children: [
+                        { name: "Uneasy", score: -1 },
+                        { name: "Defenseless", score: -1 },
+                        { name: "Fragile", score: -1 },
+                        { name: "Powerless", score: -1 },
+                        { name: "Unsafe", score: -1 },
+                        { name: "Unprotected", score: -1 }
+                    ]
+                },
+
+                {
+                    name: "Dread",
+                    score: -1,
+
+                    children: [
+                        { name: "Dreading", score: -1 },
+                        { name: "Foreboding", score: -1 },
+                        { name: "Hesitant", score: -1 },
+                        { name: "Intimidated", score: -1 },
+                        { name: "Overwhelmed", score: -1 },
+                        { name: "Fearful", score: -1 }
+                    ]
+                },
+
+                {
+                    name: "Panic",
+                    score: -1,
+
+                    children: [
+                        { name: "Panicked", score: -1 },
+                        { name: "Terrified", score: -1 },
+                        { name: "Petrified", score: -1 },
+                        { name: "Horrified", score: -1 },
+                        { name: "Frightened", score: -1 },
+                        { name: "Startled", score: -1 }
+                    ]
+                },
+
+                {
+                    name: "Avoidance",
+                    score: -1,
+
+                    children: [
+                        { name: "Withdrawn", score: -1 },
+                        { name: "Avoidant", score: -1 },
+                        { name: "Reluctant", score: -1 },
+                        { name: "Cautious", score: -1 },
+                        { name: "Guarded", score: -1 },
+                        { name: "Hesitant", score: -1 }
+                    ]
+                }
+
+            ]
+        },
+
+        {
+            name: "Sadness",
+            score: -1,
+
+            children: [
+
+                {
+                    name: "Loss",
+                    score: -1,
+
+                    children: [
+                        { name: "Grieving", score: -1 },
+                        { name: "Bereaved", score: -1 },
+                        { name: "Mourning", score: -1 },
+                        { name: "Heartbroken", score: -1 },
+                        { name: "Sorrowful", score: -1 },
+                        { name: "Devastated", score: -1 }
+                    ]
+                },
+
+                {
+                    name: "Loneliness",
+                    score: -1,
+
+                    children: [
+                        { name: "Lonely", score: -1 },
+                        { name: "Isolated", score: -1 },
+                        { name: "Abandoned", score: -1 },
+                        { name: "Rejected", score: -1 },
+                        { name: "Disconnected", score: -1 },
+                        { name: "Homesick", score: -1 }
+                    ]
+                },
+
+                {
+                    name: "Disappointment",
+                    score: -1,
+
+                    children: [
+                        { name: "Disappointed", score: -1 },
+                        { name: "Discouraged", score: -1 },
+                        { name: "Disillusioned", score: -1 },
+                        { name: "Let Down", score: -1 },
+                        { name: "Dissatisfied", score: -1 },
+                        { name: "Unfulfilled", score: -1 }
+                    ]
+                },
+
+                {
+                    name: "Despair",
+                    score: -1,
+
+                    children: [
+                        { name: "Hopeless", score: -1 },
+                        { name: "Despairing", score: -1 },
+                        { name: "Despondent", score: -1 },
+                        { name: "Defeated", score: -1 },
+                        { name: "Broken", score: -1 },
+                        { name: "Helpless", score: -1 }
+                    ]
+                },
+
+                {
+                    name: "Regret",
+                    score: -1,
+
+                    children: [
+                        { name: "Regretful", score: -1 },
+                        { name: "Remorseful", score: -1 },
+                        { name: "Guilty", score: -1 },
+                        { name: "Ashamed", score: -1 },
+                        { name: "Sorry", score: -1 },
+                        { name: "Repentant", score: -1 }
+                    ]
+                },
+
+                {
+                    name: "Emptiness",
+                    score: -1,
+
+                    children: [
+                        { name: "Empty", score: -1 },
+                        { name: "Numb", score: -1 },
+                        { name: "Hollow", score: -1 },
+                        { name: "Drained", score: -1 },
+                        { name: "Weary", score: -1 },
+                        { name: "Withdrawn", score: -1 }
+                    ]
+                },
+
+                {
+                    name: "Heartache",
+                    score: -1,
+
+                    children: [
+                        { name: "Hurt", score: -1 },
+                        { name: "Wounded", score: -1 },
+                        { name: "Crushed", score: -1 },
+                        { name: "Dejected", score: -1 },
+                        { name: "Blue", score: -1 },
+                        { name: "Melancholy", score: -1 }
+                    ]
+                }
+
+            ]
+        },
+
+        {
+            name: "Anger",
+            score: -1,
+
+            children: [
+
+                {
+                    name: "Frustration",
+                    score: -1,
+
+                    children: [
+                        { name: "Frustrated", score: -1 },
+                        { name: "Impatient", score: -1 },
+                        { name: "Blocked", score: -1 },
+                        { name: "Stuck", score: -1 },
+                        { name: "Agitated", score: -1 },
+                        { name: "Exasperated", score: -1 }
+                    ]
+                },
+
+                {
+                    name: "Irritation",
+                    score: -1,
+
+                    children: [
+                        { name: "Annoyed", score: -1 },
+                        { name: "Irritated", score: -1 },
+                        { name: "Bothered", score: -1 },
+                        { name: "Aggravated", score: -1 },
+                        { name: "Perturbed", score: -1 },
+                        { name: "Impatient", score: -1 }
+                    ]
+                },
+
+                {
+                    name: "Resentment",
+                    score: -1,
+
+                    children: [
+                        { name: "Resentful", score: -1 },
+                        { name: "Bitter", score: -1 },
+                        { name: "Wronged", score: -1 },
+                        { name: "Slighted", score: -1 },
+                        { name: "Embittered", score: -1 },
+                        { name: "Aggrieved", score: -1 }
+                    ]
+                },
+
+                {
+                    name: "Hostility",
+                    score: -1,
+
+                    children: [
+                        { name: "Hostile", score: -1 },
+                        { name: "Aggressive", score: -1 },
+                        { name: "Confrontational", score: -1 },
+                        { name: "Defiant", score: -1 },
+                        { name: "Argumentative", score: -1 },
+                        { name: "Antagonistic", score: -1 }
+                    ]
+                },
+
+                {
+                    name: "Rage",
+                    score: -1,
+
+                    children: [
+                        { name: "Furious", score: -1 },
+                        { name: "Enraged", score: -1 },
+                        { name: "Livid", score: -1 },
+                        { name: "Incensed", score: -1 },
+                        { name: "Outraged", score: -1 },
+                        { name: "Seething", score: -1 }
+                    ]
+                },
+
+                {
+                    name: "Contempt",
+                    score: -1,
+
+                    children: [
+                        { name: "Disdainful", score: -1 },
+                        { name: "Scornful", score: -1 },
+                        { name: "Dismissive", score: -1 },
+                        { name: "Disgusted", score: -1 },
+                        { name: "Derisive", score: -1 },
+                        { name: "Mocking", score: -1 }
+                    ]
+                },
+
+                {
+                    name: "Indignation",
+                    score: -4,
+
+                    children: [
+                        { name: "Indignant", score: -1 },
+                        { name: "Offended", score: -1 },
+                        { name: "Insulted", score: -1 },
+                        { name: "Violated", score: -1 },
+                        { name: "Betrayed", score: -1 },
+                        { name: "Outraged", score: -1 }
+                    ]
+                }
+
+            ]
+        },
+
+        {
+            name: "Love",
+            score: 1,
+
+            children: [
+
+                {
+                    name: "Affection",
+                    score: 1,
+
+                    children: [
+                        { name: "Affectionate", score: 1 },
+                        { name: "Fond", score: 1 },
+                        { name: "Tender", score: 1 },
+                        { name: "Loving", score: 1 },
+                        { name: "Endearing", score: 1 },
+                        { name: "Cherishing", score: 1 }
+                    ]
+                },
+
+                {
+                    name: "Compassion",
+                    score: 1,
+
+                    children: [
+                        { name: "Compassionate", score: 1 },
+                        { name: "Empathetic", score: 1 },
+                        { name: "Kind", score: 1 },
+                        { name: "Merciful", score: 1 },
+                        { name: "Understanding", score: 1 },
+                        { name: "Forgiving", score: 1 }
+                    ]
+                },
+
+                {
+                    name: "Trust",
+                    score: 1,
+
+                    children: [
+                        { name: "Trusting", score: 1 },
+                        { name: "Secure", score: 1 },
+                        { name: "Faithful", score: 1 },
+                        { name: "Loyal", score: 1 },
+                        { name: "Dependable", score: 1 },
+                        { name: "Committed", score: 1 }
+                    ]
+                },
+
+                {
+                    name: "Intimacy",
+                    score: 1,
+
+                    children: [
+                        { name: "Close", score: 1 },
+                        { name: "Connected", score: 1 },
+                        { name: "Accepted", score: 1 },
+                        { name: "Vulnerable", score: 1 },
+                        { name: "Open", score: 1 },
+                        { name: "Understood", score: 1 }
+                    ]
+                },
+
+                {
+                    name: "Devotion",
+                    score: 1,
+
+                    children: [
+                        { name: "Devoted", score: 1 },
+                        { name: "Dedicated", score: 1 },
+                        { name: "Committed", score: 1 },
+                        { name: "Steadfast", score: 1 },
+                        { name: "Faithful", score: 1 },
+                        { name: "Constant", score: 1 }
+                    ]
+                },
+
+                {
+                    name: "Admiration",
+                    score: 1,
+
+                    children: [
+                        { name: "Admiring", score: 1 },
+                        { name: "Respectful", score: 1 },
+                        { name: "Appreciative", score: 1 },
+                        { name: "Inspired", score: 1 },
+                        { name: "Esteeming", score: 1 },
+                        { name: "Reverent", score: 1 }
+                    ]
+                },
+
+                {
+                    name: "Nurturing",
+                    score: 1,
+
+                    children: [
+                        { name: "Caring", score: 1 },
+                        { name: "Protective", score: 1 },
+                        { name: "Supportive", score: 1 },
+                        { name: "Encouraging", score: 1 },
+                        { name: "Generous", score: 1 },
+                        { name: "Selfless", score: 1 }
+                    ]
+                }
+
+            ]
+        }
+
+    ]
+
+};
+
+
+// --------------------------------
+// Emotion colours (only six)
+// --------------------------------
+
+const emotionColours = {
+    Joy: "#A8D5BA",       // pastel green
+    Surprise: "#A9D6E5",  // pastel sky blue
+    Fear: "#C6B7E8",      // soft lavender
+    Sadness: "#9DBBD9",   // muted blue
+    Anger: "#F4A261",     // pastel orange
+    Love: "#E9B7D4"       // soft pink
+};
+
+// --------------------------------
+// SVG setup
+// --------------------------------
+
+const width = window.innerWidth;
+const height = window.innerHeight;
+
+const svg = d3.select("#svg");
+
+const g = svg.append("g")
+    .attr(
+        "transform",
+        `translate(${width / 2},${height / 2})`
+    );
+
+
+const tree = d3.tree()
+    .size([
+        2 * Math.PI,
+        Math.min(width, height) / 2 - 100
+    ]);
+
+
+const root = d3.hierarchy(data);
+
+
+// --------------------------------
+// Collapse all levels initially
+// --------------------------------
+
+function collapse(d){
+
+    if(d.children){
+
+        d.children.forEach(collapse);
+
+        d._children = d.children;
+
+        d.children = null;
+
+    }
+
+}
+
+
+root.children.forEach(collapse);
+
+
+
+const selected = new Set();
+
+
+// --------------------------------
+// Colour inheritance
+// --------------------------------
+
+function getEmotionColour(d){
+
+    let current = d;
+
+    while(current){
+
+        if(emotionColours[current.data.name]){
+
+            return emotionColours[current.data.name];
+
+        }
+
+        current = current.parent;
+
+    }
+
+    return "#cccccc";
+
+}
+
+
+// --------------------------------
+// Coordinate conversion
+// --------------------------------
+
+function project(angle, radius){
+
+    return [
+
+        Math.cos(angle - Math.PI / 2) * radius,
+
+        Math.sin(angle - Math.PI / 2) * radius
+
+    ];
+
+}
+
+
+// --------------------------------
+// Update drawing
+// --------------------------------
+
+function update(){
+
+    tree(root);
+
+
+    const nodes = root.descendants();
+
+    const links = root.links();
+
+
+
+    // Links
+
+    const link = g.selectAll(".link")
+        .data(
+            links,
+            d => d.target.data.name + d.target.depth
+        );
+
+
+    link.enter()
+
+        .append("line")
+
+        .attr("class","link")
+
+        .merge(link)
+
+        .transition()
+
+        .duration(600)
+
+        .attr("x1",d => project(
+            d.source.x,
+            d.source.y
+        )[0])
+
+        .attr("y1",d => project(
+            d.source.x,
+            d.source.y
+        )[1])
+
+        .attr("x2",d => project(
+            d.target.x,
+            d.target.y
+        )[0])
+
+        .attr("y2",d => project(
+            d.target.x,
+            d.target.y
+        )[1])
+
+        .attr("stroke","#cccccc")
+        .attr("stroke-width",2);
+
+
+    link.exit().remove();
+
+
+
+    // Nodes
+
+    const node = g.selectAll(".node")
+        .data(
+            nodes,
+            d => d.data.name + d.depth
+        );
+
+
+
+    const enter = node.enter()
+
+        .append("g")
+
+        .attr("class","node")
+
+        .on("click",(event,d)=>{
+
+
+            // Expand/collapse any level
+
+            if(d.children || d._children){
+
+                if(d.children){
+
+                    d._children = d.children;
+
+                    d.children = null;
+
+                }
+                else{
+
+                    d.children = d._children;
+
+                    d._children = null;
+
+                }
+
+                update();
+
+                return;
+
+            }
+
+
+
+            // Select leaf emotions
+
+            if(d.depth > 1){
+
+                if(selected.has(d)){
+
+                    selected.delete(d);
+
+                }
+                else{
+
+                    selected.add(d);
+
+                }
+
+                update();
+
+            }
+
+        });
+
+
+
+    enter.append("circle");
+
+
+    enter.select("circle")
+
+        .merge(node.select("circle"))
+
+        .transition()
+
+        .duration(400)
+
+        .attr("r",d=>{
+
+            if(d.depth === 1)
+                return 55;
+
+            if(d.depth === 2)
+                return 38;
+
+            return 30;
+
+        })
+        /*
+        .attr("fill",d=>{
+
+            if(selected.has(d))
+                return "#222";
+
+            return d3.color(
+                getEmotionColour(d)
+            )
+            .brighter(d.depth * 0.25);
+
+        })*/
+        .attr("fill", d => {
+
+            if (selected.has(d))
+                return "#555";
+
+            const c = d3.hsl(getEmotionColour(d));
+
+            const level = Math.max(0, d.depth - 1);
+
+            // Increase saturation
+            c.s = Math.min(1, c.s * (1 + level * 0.23));
+
+            // Slightly reduce lightness
+            c.l = Math.max(0, c.l - level * 0.02);
+
+            return c.toString();
+
+        })
+        .attr("stroke",d=>{
+
+            if(selected.has(d))
+                return "#000";
+
+            return "#fff";
+
+        })
+
+        .attr("stroke-width",d=>{
+
+            if(selected.has(d))
+                return 5;
+
+            return 2;
+
+        });
+
+
+
+    enter.append("text");
+
+
+    enter.select("text")
+
+        .merge(node.select("text"))
+
+        .attr("dy",5)
+
+        .attr("font-size",d=>{
+
+            if(d.depth === 1)
+                return "17px";
+
+            return "14px";
+
+        })
+
+        .text(d=>d.data.name);
+
+
+
+    node.merge(enter)
+
+        .transition()
+
+        .duration(600)
+
+        .attr(
+            "transform",
+            d=>{
+
+                const p = project(
+                    d.x,
+                    d.y
+                );
+
+                return `translate(${p[0]},${p[1]})`;
+
+            }
+        );
+
+
+
+    node.exit().remove();
+
+
+
+    // --------------------------------
+    // Emotional balance
+    // --------------------------------
+
+    let positive = 0;
+    let negative = 0;
+
+    selected.forEach(d => {
+
+        if (d.data.score > 0)
+            positive += d.data.score;
+        else
+            negative += Math.abs(d.data.score);
+
+    });
+
+    g.selectAll(".centre").remove();
+
+    g.append("text")
+        .attr("class", "centre balance")
+        .attr("text-anchor", "middle")
+        .attr("y", -15)
+        .text(`${positive}/${negative}`);
+
+    let message = "";
+
+    if (positive < negative) {
+
+        const ratio = positive / negative;
+
+        if (ratio < 0.25)
+            message = "Reach out to someone";
+
+        else if (ratio < 0.5)
+            message = "Go for a walk. Exercise";
+
+        else if (ratio < 0.75)
+            message = "Be kind to yourself";
+
+        else
+            message = "Things will improve";
+
+    }
+    else if (positive > negative) {
+
+        message = "You're doing well";
+
+    }
+    else {
+
+        message = "Perfectly balanced";
+
+    }
+
+    g.append("text")
+        .attr("class", "centre subtitle")
+        .attr("text-anchor", "middle")
+        .attr("y", 22)
+        .text(message);
+
+}
+
+
+
+update();
+
+const infoButton = document.getElementById("infoButton");
+
+const infoDialog = document.getElementById("infoDialog");
+
+const closeDialog = document.getElementById("closeDialog");
+
+
+infoButton.addEventListener("click", () => {
+
+    infoDialog.classList.remove("hidden");
+
+});
+
+
+closeDialog.addEventListener("click", () => {
+
+    infoDialog.classList.add("hidden");
+
+});
+
+
+infoDialog.addEventListener("click", (e) => {
+
+    if(e.target === infoDialog){
+
+        infoDialog.classList.add("hidden");
+
+    }
+
+});
+
+window.addEventListener(
+    "resize",
+    ()=>location.reload()
+);
+
+
+</script>
+
+</body>
+
+</html>
