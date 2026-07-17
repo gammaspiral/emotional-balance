@@ -18,22 +18,15 @@ html,
 body{
 
     margin:0;
-
     padding:0;
-
     width:100%;
-
     height:100%;
-
     overflow:hidden;
-
     background:#f6f6f6;
-
     font-family:
         Arial,
         Helvetica,
         sans-serif;
-
 }
 
 
@@ -44,21 +37,13 @@ body{
 #header{
 
     height:90px;
-
     display:flex;
-
     align-items:center;
-
     justify-content:space-between;
-
     padding:0 16px;
-
     box-sizing:border-box;
-
     background:white;
-
     border-bottom:1px solid #dddddd;
-
     box-shadow:
         0 2px 6px rgba(0,0,0,.08);
 
@@ -66,90 +51,60 @@ body{
 
 
 #headerCentre{
-
     flex:1;
-
     text-align:center;
-
 }
 
 
 #score{
-
     font-size:38px;
-
     font-weight:bold;
-
     color:#222;
-
     line-height:1;
 
 }
 
 
 #scoreText{
-
     margin-top:4px;
-
     font-size:17px;
-
     font-weight:bold;
-
     color:#555;
-
 }
 
 
 #message{
-
     margin-top:6px;
-
     font-size:14px;
-
     color:#777;
 
 }
-
 
 /* -----------------------------
    Buttons
 ----------------------------- */
 
 .iconButton{
-
     width:44px;
-
     height:44px;
-
     border:none;
-
     border-radius:50%;
-
     background:white;
-
     font-size:22px;
-
     cursor:pointer;
-
     box-shadow:
         0 2px 8px rgba(0,0,0,.18);
-
     transition:.2s;
-
 }
 
 
 .iconButton:hover{
-
     background:#efefef;
-
 }
 
 
 .iconButton:active{
-
     transform:scale(.95);
-
 }
 
 
@@ -158,13 +113,9 @@ body{
 ----------------------------- */
 
 #svg{
-
     width:100%;
-
     height:calc(100vh - 90px);
-
     display:block;
-
 }
 
 
@@ -173,13 +124,9 @@ body{
 ----------------------------- */
 
 .link{
-
     fill:none;
-
     stroke:#cccccc;
-
     stroke-width:2;
-
 }
 
 
@@ -188,28 +135,18 @@ body{
 ----------------------------- */
 
 .node circle{
-
     cursor:pointer;
-
     stroke:white;
-
     stroke-width:2;
-
 }
 
 
 .node text{
-
     font-size:15px;
-
     text-anchor:middle;
-
     dominant-baseline:middle;
-
     user-select:none;
-
     pointer-events:none;
-
 }
 
 
@@ -218,70 +155,44 @@ body{
 ----------------------------- */
 
 #infoDialog{
-
     position:fixed;
-
     inset:0;
-
     display:flex;
-
     justify-content:center;
-
     align-items:center;
-
     background:rgba(0,0,0,.45);
-
     z-index:1000;
-
 }
 
 
 #infoDialog.hidden{
-
     display:none;
-
 }
 
 
 .dialog{
-
     width:min(430px,90vw);
-
     background:white;
-
     border-radius:18px;
-
     padding:24px;
-
     box-shadow:
         0 10px 35px rgba(0,0,0,.35);
-
 }
 
 
 .dialog h2{
-
     margin-top:0;
-
 }
 
 
 .dialog button{
-
     margin-top:20px;
-
     padding:10px 20px;
-
     border:none;
-
     border-radius:8px;
-
     background:#4a90e2;
-
     color:white;
-
     cursor:pointer;
-
 }
 
 
@@ -290,146 +201,87 @@ body{
 ----------------------------- */
 
 @media (max-width:600px){
-
     #header{
-
         height:100px;
-
     }
 
     #score{
-
         font-size:34px;
-
     }
 
     #scoreText{
-
         font-size:16px;
-
     }
 
     #message{
-
         font-size:13px;
-
     }
 
 }
 
 </style>
-
 </head>
-
 <body>
-<body>
-
-    <!-- ==========================================
-         HEADER
-    =========================================== -->
-
     <header id="header">
-
         <!-- Collapse all -->
-
         <button
             id="collapseAll"
             class="iconButton"
-            title="Collapse all">
-
+            title="Collapse all"
+            type="button">
             ⊙
-
         </button>
-
-
         <!-- Score -->
-
         <div id="headerCentre">
-
             <div id="score">
                 0
+ 
             </div>
-
             <div id="scoreText">
-
                 Emotional Net Balance
-
             </div>
-
             <div id="message">
-
                 Select emotions to begin
-
             </div>
-
         </div>
-
 
         <!-- Information -->
 
         <button
             id="infoButton"
             class="iconButton"
-            title="About">
-
+            title="About"
+            type="button">
             ⓘ
-
         </button>
 
     </header>
-
-
-    <!-- ==========================================
-         VISUALISATION
-    =========================================== -->
-
     <svg id="svg"></svg>
-
-
-    <!-- ==========================================
-         ABOUT DIALOG
-    =========================================== -->
-
     <div
         id="infoDialog"
         class="hidden">
-
         <div class="dialog">
-
             <h2>
                 About
             </h2>
-
             <p>
-               This website is an experimental visualisation of emotions.
+                This website is an experimental visualisation of emotions.
             </p>
-
             <p>
-
-            It explores one possible way of mapping emotions in a visual space. The organisation of emotions and the calculated 'net balance' are experimental and are intended solely to support reflection and exploration. 
-
+                It explores one possible way of mapping emotions in a visual space. The organisation of emotions and the calculated 'net balance' are experimental and are intended solely to support reflection and exploration. 
             </p>
-
             <p>
-
                 It is <strong>not</strong> a validated
                 psychological assessment, diagnostic
                 tool or source of medical advice.
-
             </p>
-
             <button id="closeDialog">
-
                 Close
-
             </button>
-
         </div>
-
     </div>
-
 <script>
-
+/*console.log("SCRIPT LOADED");*/
 const data = {
 
     children: [
@@ -1168,19 +1020,14 @@ root.children.forEach(collapse);
 
 const selected = new Set();
 
-
 // =====================================================
 // Coordinates
 // =====================================================
 
 function project(angle, radius){
-
     return [
-
         Math.cos(angle - Math.PI / 2) * radius,
-
         Math.sin(angle - Math.PI / 2) * radius
-
     ];
 
 }
@@ -1190,13 +1037,10 @@ function project(angle, radius){
 // =====================================================
 
 function fitToScreen(){
-
     const nodes = root.descendants();
-
 
     if(nodes.length === 0)
         return;
-
 
     const points = nodes.map(d=>{
 
@@ -1215,11 +1059,8 @@ function fitToScreen(){
 
     const minX = d3.min(points,d=>d.x);
     const maxX = d3.max(points,d=>d.x);
-
     const minY = d3.min(points,d=>d.y);
     const maxY = d3.max(points,d=>d.y);
-
-
 
     const treeWidth =
         maxX - minX;
@@ -1227,31 +1068,19 @@ function fitToScreen(){
     const treeHeight =
         maxY - minY;
 
-
-
     const padding = 120;
-
 
     const scale = Math.min(
 
         (width - padding) / treeWidth,
-
         (height - padding) / treeHeight,
-
         1
-
     );
-
-
 
     const centreX =
         (minX + maxX) / 2;
-
-
     const centreY =
         (minY + maxY) / 2;
-
-
 
     g.attr(
         "transform",
@@ -1274,40 +1103,26 @@ function fitToScreen(){
 // =====================================================
 
 function getEmotionColour(node){
-
     let current = node;
-
     while(current){
-
         if(emotionColours[current.data.name]){
-
             return emotionColours[current.data.name];
-
         }
-
         current = current.parent;
-
     }
-
     return "#cccccc";
-
 }
 
 // =====================================================
 // Positioning
 // =====================================================
 function positionSVG(){
-
     const headerHeight =
         document.getElementById("header").offsetHeight;
-
     const width =
         window.innerWidth;
-
     const height =
         window.innerHeight - headerHeight;
-
-
     g.attr(
         "transform",
         `
@@ -1317,76 +1132,107 @@ function positionSVG(){
         )
         `
     );
-
 }
+
 // =====================================================
 // Spacing
 // =====================================================
 
 function applyDepthSpacing(){
-
     const radius = getRadius();
-
     root.each(d=>{
-
         switch(d.depth){
-
             case 0:
                 d.y = 0;
                 break;
-
             case 1:
                 d.y = radius * 0.32;
                 break;
-
             case 2:
                 d.y = radius * 0.62;
                 break;
-
             case 3:
                 d.y = radius * 0.88;
                 break;
-
             case 4:
                 d.y = radius * 1.12;
                 break;
-
             default:
                 d.y = radius * 1.55;
-
         }
 
     });
-
 }
-
 
 // =====================================================
 // Score
 // =====================================================
 
+
+function findNodeById(node, id){
+    if(node.data.id === id){
+        return node;
+    }
+
+    if(node.children){
+        for(const child of node.children){
+            const result = findNodeById(child,id);
+            if(result){
+                return result;
+            }
+        }
+    }
+
+    if(node._children){
+        for(const child of node._children){
+            const result = findNodeById(child,id);
+            if(result){
+                return result;
+            }
+        }
+    }
+    return null;
+}
+
+function findNodeById(node, id){
+    if(node.data.id === id){
+        return node;
+    }
+
+    if(node.children){
+        for(const child of node.children){
+            const result = findNodeById(child,id);
+            if(result){
+                return result;
+            }
+        }
+    }
+    if(node._children){
+        for(const child of node._children){
+            const result = findNodeById(child,id);
+            if(result){
+                return result;
+            }
+        }
+    }
+    return null;
+}
+
 function updateScore(){
-
     let score = 0;
-
-
-    selected.forEach(d=>{
-
-        score += d.data.score;
-
+    selected.forEach(id=>{
+        const node = findNodeById(root,id);
+        if(node){
+            score += node.data.score;
+        }
     });
-
 
     document.getElementById("score").textContent =
         score > 0
         ? "+" + score
         : score;
-
-
     return score;
-
 }
-
 
 // =====================================================
 // Message
@@ -1395,86 +1241,55 @@ function updateScore(){
 function updateMessage(score){
 
     let message;
-
-
     if(score >= 8){
-
         message = "A very positive emotional state.";
 
     }
     else if(score >= 4){
-
         message = "You're doing well.";
 
     }
     else if(score > 0){
-
         message = "A slightly positive balance.";
-
     }
     else if(score === 0){
-
         message = "Balanced emotions.";
-
     }
     else if(score > -2){
-
         message = "Do something that sparks joy.";
-
     }
     else if(score > -4){
-
         message = "Be kind to yourself.";
-
     }
     else if(score > -8){
-
         message = "Take time to rest and recharge.";
-
     }
     else{
-
         message = "Consider talking with someone you trust.";
-
     }
-
 
     document.getElementById("message").textContent =
         message;
-
 }
-
-
 
 // =====================================================
 // Links
 // =====================================================
 
 function updateLinks(){
-
     const links = root.links();
-
-
     const link = g.selectAll(".link")
         .data(
             links,
             d =>
                 d.target.data.id
         );
-
-
     link.enter()
-
         .append("line")
-
         .attr("class","link")
-
         .merge(link)
-
         .transition()
-
         .duration(500)
-
         .attr("x1",d =>
             project(
                 d.source.x,
@@ -1504,12 +1319,8 @@ function updateLinks(){
         )
 
         .attr("stroke","#cccccc")
-
         .attr("stroke-width",2);
-
-
     link.exit().remove();
-
 }
 
 
@@ -1519,165 +1330,95 @@ function updateLinks(){
 // =====================================================
 
 function updateNodes(){
-
     const nodes = root.descendants();
-
-
     const node = g.selectAll(".node")
         .data(
             nodes,
             d => d.data.id
         );
 
-
     const enter = node.enter()
-
         .append("g")
-
         .attr("class","node")
-
         .on("click",(event,d)=>{
-
 
             if(d.children || d._children){
 
-
                 if(d.children){
-
                     d._children = d.children;
-
                     d.children = null;
-
                 }
 
                 else{
-
                     d.children = d._children;
-
                     d._children = null;
 
                 }
 
-
                 update();
-
                 return;
-
             }
-
-
 
             if(d.depth > 1){
-
-
-                if(selected.has(d)){
-
-                    selected.delete(d);
-
-                }
-
-                else{
-
-                    selected.add(d);
-
-                }
-
-
-                update();
-
+            if(selected.has(d.data.id)){
+                selected.delete(d.data.id);
             }
-
-
+            else{
+                selected.add(d.data.id);
+            }
+                update();
+            }
         });
-
-
-
     enter.append("circle");
-
-
     enter.append("text");
-
-
-
     enter.select("circle")
-
         .merge(node.select("circle"))
-
         .transition()
-
         .duration(400)
-
         .attr("r",d=>{
-
             if(d.depth === 1)
                 return 55;
-
             if(d.depth === 2)
                 return 38;
-
             return 28;
-
         })
 
         .attr("fill",d=>{
-
-
-            if(selected.has(d))
-                return "#555";
-
-
+        if(selected.has(d.data.id))
+            return "#555";
             const c = d3.hsl(
                 getEmotionColour(d)
             );
-
-
             c.l =
                 Math.min(
                     0.85,
                     c.l + d.depth * 0.03
                 );
 
-
             return c.toString();
-
 
         })
 
         .attr("stroke","#fff")
-
         .attr("stroke-width",2);
 
-
-
     enter.select("text")
-
         .merge(node.select("text"))
-
         .attr("dy",5)
-
         .attr("text-anchor","middle")
-
         .text(d=>d.data.name);
 
-
-
     node.merge(enter)
-
         .transition()
-
         .duration(600)
-
         .attr(
             "transform",
             d=>{
-
                 const p =
                     project(
                         d.x,
                         d.y
                     );
-
-
                 return `
                 translate(${p[0]},${p[1]})
                 `;
@@ -1685,50 +1426,35 @@ function updateNodes(){
             }
         );
 
-
-
     node.exit().remove();
-
 }
-
-
 
 // =====================================================
 // Main update
 // =====================================================
 
 function update(){
-
     positionSVG();
-    
-    tree(root);
 
+    tree(root);
 
     applyDepthSpacing();
 
-
     fitToScreen();
-
 
     updateLinks();
 
-
     updateNodes();
 
-
     const score = updateScore();
-
 
     updateMessage(score);
 
 }
 
-
 // Initial draw
 
 update();
-
-
 
 // =====================================================
 // Info dialog
@@ -1737,43 +1463,42 @@ update();
 const infoButton =
     document.getElementById("infoButton");
 
-
 const infoDialog =
     document.getElementById("infoDialog");
-
 
 const closeDialog =
     document.getElementById("closeDialog");
 
 
+infoButton.addEventListener("click", (event)=>{
 
-infoButton.addEventListener("click",()=>{
+    event.preventDefault();
 
     infoDialog.classList.remove("hidden");
 
 });
 
 
+closeDialog.addEventListener("click", (event)=>{
 
-closeDialog.addEventListener("click",()=>{
+    event.preventDefault();
+
+    event.stopPropagation();
 
     infoDialog.classList.add("hidden");
 
 });
 
 
+infoDialog.addEventListener("click",(event)=>{
 
-infoDialog.addEventListener("click",e=>{
-
-    if(e.target === infoDialog){
+    if(event.target === infoDialog){
 
         infoDialog.classList.add("hidden");
 
     }
 
 });
-
-
 
 // =====================================================
 // Collapse all button
@@ -1782,13 +1507,9 @@ infoDialog.addEventListener("click",e=>{
 function collapseAll(node){
 
     if(node.children){
-
         node.children.forEach(collapseAll);
-
         node._children = node.children;
-
         node.children = null;
-
     }
 
 }
@@ -1797,30 +1518,27 @@ function collapseAll(node){
 document
 .getElementById("collapseAll")
 .addEventListener("click",()=>{
-
-
     root.children.forEach(collapseAll);
-
-
-    selected.clear();
-
-
     update();
-
-
 });
-
 
 
 // =====================================================
 // Responsive
 // =====================================================
 
-window.addEventListener(
-    "resize",
-    ()=>location.reload()
-);
+window.addEventListener("resize", () => {
 
+    const width = window.innerWidth;
+    const height = window.innerHeight;
+
+    svg
+        .attr("width", width)
+        .attr("height", height);
+
+    update();
+
+});
 
 </script>
 
