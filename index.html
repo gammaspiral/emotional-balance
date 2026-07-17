@@ -3,156 +3,270 @@
 
 <head>
 
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1">
+<meta charset="UTF-8">
 
-    <title>Emotional Balance</title>
+<meta name="viewport"
+      content="width=device-width, initial-scale=1">
 
-    <script src="d3.min.js"></script>
+<title>Emotional Balance</title>
 
-    <style>
-        html,
-        body {
+<script src="d3.min.js"></script>
 
-            margin: 0;
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
+<style>
 
-            background: #fafafa;
+html,
+body{
 
-            font-family: Arial, Helvetica, sans-serif;
+    margin:0;
 
-        }
+    padding:0;
 
-        svg {
+    width:100%;
 
-            width: 100vw;
-            height: 100vh;
+    height:100%;
 
-        }
+    overflow:hidden;
 
-        .node circle {
+    background:#f6f6f6;
 
-            cursor: pointer;
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
 
-            stroke: white;
+}
 
-            stroke-width: 2;
 
-        }
+/* -----------------------------
+   Header
+----------------------------- */
 
-        .node text {
+#header{
 
-            user-select: none;
+    height:90px;
 
-            font-size: 15px;
+    display:flex;
 
-            text-anchor: middle;
+    align-items:center;
 
-            pointer-events: none;
+    justify-content:space-between;
 
-        }
+    padding:0 16px;
 
-        .balance {
+    box-sizing:border-box;
 
-            font-size: 42px;
+    background:white;
 
-            font-weight: bold;
+    border-bottom:1px solid #dddddd;
 
-        }
+    box-shadow:
+        0 2px 6px rgba(0,0,0,.08);
 
-        .subtitle {
+}
 
-            font-size: 18px;
-            font-weight: bold;
-            fill: #1a1a1a;
 
-        }
+#headerCentre{
 
-        #infoButton{
+    flex:1;
 
-    position:fixed;
+    text-align:center;
 
-    top:20px;
+}
 
-    right:20px;
 
-    width:42px;
+#score{
 
-    height:42px;
+    font-size:38px;
+
+    font-weight:bold;
+
+    color:#222;
+
+    line-height:1;
+
+}
+
+
+#scoreText{
+
+    margin-top:4px;
+
+    font-size:17px;
+
+    font-weight:bold;
+
+    color:#555;
+
+}
+
+
+#message{
+
+    margin-top:6px;
+
+    font-size:14px;
+
+    color:#777;
+
+}
+
+
+/* -----------------------------
+   Buttons
+----------------------------- */
+
+.iconButton{
+
+    width:44px;
+
+    height:44px;
 
     border:none;
 
     border-radius:50%;
 
-    background:#ffffff;
+    background:white;
 
-    color:#555;
-
-    font-size:24px;
+    font-size:22px;
 
     cursor:pointer;
 
-    box-shadow:0 2px 8px rgba(0,0,0,.2);
+    box-shadow:
+        0 2px 8px rgba(0,0,0,.18);
+
+    transition:.2s;
+
+}
+
+
+.iconButton:hover{
+
+    background:#efefef;
+
+}
+
+
+.iconButton:active{
+
+    transform:scale(.95);
+
+}
+
+
+/* -----------------------------
+   SVG
+----------------------------- */
+
+#svg{
+
+    width:100%;
+
+    height:calc(100vh - 90px);
+
+    display:block;
+
+}
+
+
+/* -----------------------------
+   Links
+----------------------------- */
+
+.link{
+
+    fill:none;
+
+    stroke:#cccccc;
+
+    stroke-width:2;
+
+}
+
+
+/* -----------------------------
+   Nodes
+----------------------------- */
+
+.node circle{
+
+    cursor:pointer;
+
+    stroke:white;
+
+    stroke-width:2;
+
+}
+
+
+.node text{
+
+    font-size:15px;
+
+    text-anchor:middle;
+
+    dominant-baseline:middle;
+
+    user-select:none;
+
+    pointer-events:none;
+
+}
+
+
+/* -----------------------------
+   Dialog
+----------------------------- */
+
+#infoDialog{
+
+    position:fixed;
+
+    inset:0;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    background:rgba(0,0,0,.45);
 
     z-index:1000;
 
 }
 
-    #infoButton:hover{
 
-        background:#f0f0f0;
+#infoDialog.hidden{
 
-    }
+    display:none;
 
-    #infoDialog{
+}
 
-        position:fixed;
 
-        inset:0;
+.dialog{
 
-        background:rgba(0,0,0,.45);
+    width:min(430px,90vw);
 
-        display:flex;
+    background:white;
 
-        align-items:center;
+    border-radius:18px;
 
-        justify-content:center;
+    padding:24px;
 
-        z-index:2000;
+    box-shadow:
+        0 10px 35px rgba(0,0,0,.35);
 
-    }
+}
 
-    #infoDialog.hidden{
 
-        display:none;
+.dialog h2{
 
-    }
+    margin-top:0;
 
-    .dialog{
+}
 
-        width:min(420px,90vw);
 
-        background:white;
-
-        border-radius:16px;
-
-        padding:24px;
-
-        text-align:left;
-
-        box-shadow:0 10px 40px rgba(0,0,0,.3);
-
-    }
-
-    .dialog h2{
-
-        margin-top:0;
-
-    }
-
-    .dialog button{
+.dialog button{
 
     margin-top:20px;
 
@@ -169,38 +283,151 @@
     cursor:pointer;
 
 }
-    </style>
+
+
+/* -----------------------------
+   Mobile
+----------------------------- */
+
+@media (max-width:600px){
+
+    #header{
+
+        height:100px;
+
+    }
+
+    #score{
+
+        font-size:34px;
+
+    }
+
+    #scoreText{
+
+        font-size:16px;
+
+    }
+
+    #message{
+
+        font-size:13px;
+
+    }
+
+}
+
+</style>
 
 </head>
 
 <body>
+<body>
+
+    <!-- ==========================================
+         HEADER
+    =========================================== -->
+
+    <header id="header">
+
+        <!-- Collapse all -->
+
+        <button
+            id="collapseAll"
+            class="iconButton"
+            title="Collapse all">
+
+            ⊙
+
+        </button>
+
+
+        <!-- Score -->
+
+        <div id="headerCentre">
+
+            <div id="score">
+                0
+            </div>
+
+            <div id="scoreText">
+
+                Emotional Net Balance
+
+            </div>
+
+            <div id="message">
+
+                Select emotions to begin
+
+            </div>
+
+        </div>
+
+
+        <!-- Information -->
+
+        <button
+            id="infoButton"
+            class="iconButton"
+            title="About">
+
+            ⓘ
+
+        </button>
+
+    </header>
+
+
+    <!-- ==========================================
+         VISUALISATION
+    =========================================== -->
 
     <svg id="svg"></svg>
-    <button id="infoButton">ⓘ</button>
 
-    <div id="infoDialog" class="hidden">
+
+    <!-- ==========================================
+         ABOUT DIALOG
+    =========================================== -->
+
+    <div
+        id="infoDialog"
+        class="hidden">
 
         <div class="dialog">
 
-            <h2>About</h2>
+            <h2>
+                About
+            </h2>
 
             <p>
-                This website is an experimental visualisation of emotions.
+               This website is an experimental visualisation of emotions.
             </p>
 
             <p>
-                It explores one possible way of mapping emotions in a visual space. The organisation of emotions and the calculated 'net balance' are experimental and are intended solely to support reflection and exploration.
-            </p>
-            <p>
-                It is <strong>not</strong> a validated psychological assessment,
-                diagnostic tool, or source of medical advice.
+
+            It explores one possible way of mapping emotions in a visual space. The organisation of emotions and the calculated 'net balance' are experimental and are intended solely to support reflection and exploration. 
+
             </p>
 
-            <button id="closeDialog">Close</button>
+            <p>
+
+                It is <strong>not</strong> a validated
+                psychological assessment, diagnostic
+                tool or source of medical advice.
+
+            </p>
+
+            <button id="closeDialog">
+
+                Close
+
+            </button>
 
         </div>
 
     </div>
+
 <script>
 
 const data = {
@@ -316,7 +543,7 @@ const data = {
 
         {
             name: "Surprise",
-            score: 1,
+            score: 0,
 
             children: [
 
@@ -350,29 +577,29 @@ const data = {
 
                 {
                     name: "Shock",
-                    score: 1,
+                    score: -1,
 
                     children: [
-                        { name: "Startled", score: 1 },
-                        { name: "Shocked", score: 1 },
-                        { name: "Stunned", score: 1 },
-                        { name: "Alarmed", score: 1 },
-                        { name: "Jolted", score: 1 },
-                        { name: "Taken Aback", score: 1 }
+                        { name: "Startled", score: -1 },
+                        { name: "Shocked", score: -1 },
+                        { name: "Stunned", score: -1 },
+                        { name: "Alarmed", score: -1 },
+                        { name: "Jolted", score: -1 },
+                        { name: "Taken Aback", score: -1 }
                     ]
                 },
 
                 {
                     name: "Confusion",
-                    score: 1,
+                    score: -1,
 
                     children: [
-                        { name: "Confused", score: 1 },
-                        { name: "Perplexed", score: 1 },
-                        { name: "Bewildered", score: 1 },
-                        { name: "Puzzled", score: 1 },
-                        { name: "Disoriented", score: 1 },
-                        { name: "Baffled", score: 1 }
+                        { name: "Confused", score: -1 },
+                        { name: "Perplexed", score: -1 },
+                        { name: "Bewildered", score: -1 },
+                        { name: "Puzzled", score: -1 },
+                        { name: "Disoriented", score: -1 },
+                        { name: "Baffled", score: -1 }
                     ]
                 },
 
@@ -825,59 +1052,107 @@ const data = {
 
 };
 
-
-// --------------------------------
-// Emotion colours (only six)
-// --------------------------------
+// =====================================================
+// Emotion colours
+// =====================================================
 
 const emotionColours = {
-    Joy: "#A8D5BA",       // pastel green
-    Surprise: "#A9D6E5",  // pastel sky blue
-    Fear: "#C6B7E8",      // soft lavender
-    Sadness: "#9DBBD9",   // muted blue
-    Anger: "#F4A261",     // pastel orange
-    Love: "#E9B7D4"       // soft pink
+
+    Joy: "#A8D5BA",
+    Surprise: "#A9D6E5",
+    Fear: "#C6B7E8",
+    Sadness: "#9DBBD9",
+    Anger: "#F4A261",
+    Love: "#E9B7D4"
+
 };
 
-// --------------------------------
-// SVG setup
-// --------------------------------
+// =====================================================
+// Layout
+// =====================================================
+
+const headerHeight =
+    document.getElementById("header").offsetHeight;
 
 const width = window.innerWidth;
-const height = window.innerHeight;
 
-const svg = d3.select("#svg");
+const availableHeight =
+    window.innerHeight - headerHeight - 40;
 
-const g = svg.append("g")
-    .attr(
-        "transform",
-        `translate(${width / 2},${height / 2})`
-    );
 
+const height = Math.max(
+    availableHeight,
+    500
+);
+
+// =====================================================
+// SVG
+// =====================================================
+
+const svg = d3.select("#svg")
+    .attr("width", width)
+    .attr("height", height);
+
+
+const g = svg.append("g");
+
+// =====================================================
+// Tree
+// =====================================================
 
 const tree = d3.tree()
     .size([
         2 * Math.PI,
-        Math.min(width, height) / 2 - 100
+        getRadius()
     ]);
 
 
+function getRadius(){
+
+    const availableWidth = window.innerWidth;
+    const availableHeight =
+        window.innerHeight -
+        document.getElementById("header").offsetHeight -
+        40;
+
+    return Math.max(
+        220,
+        Math.min(
+            availableWidth,
+            availableHeight
+        ) / 2 - 40
+    );
+
+}
 const root = d3.hierarchy(data);
 
 
-// --------------------------------
-// Collapse all levels initially
-// --------------------------------
+// =====================================================
+// IDs
+// =====================================================
 
-function collapse(d){
+let nodeCounter = 0;
 
-    if(d.children){
+root.each(d => {
 
-        d.children.forEach(collapse);
+    d.data.id = "emotion_" + (++nodeCounter);
 
-        d._children = d.children;
+});
 
-        d.children = null;
+
+// =====================================================
+// Collapse initially
+// =====================================================
+
+function collapse(node){
+
+    if(node.children){
+
+        node.children.forEach(collapse);
+
+        node._children = node.children;
+
+        node.children = null;
 
     }
 
@@ -887,17 +1162,120 @@ function collapse(d){
 root.children.forEach(collapse);
 
 
+// =====================================================
+// Selection
+// =====================================================
 
 const selected = new Set();
 
 
-// --------------------------------
+// =====================================================
+// Coordinates
+// =====================================================
+
+function project(angle, radius){
+
+    return [
+
+        Math.cos(angle - Math.PI / 2) * radius,
+
+        Math.sin(angle - Math.PI / 2) * radius
+
+    ];
+
+}
+
+// =====================================================
+// Auto scale visualisation to viewport
+// =====================================================
+
+function fitToScreen(){
+
+    const nodes = root.descendants();
+
+
+    if(nodes.length === 0)
+        return;
+
+
+    const points = nodes.map(d=>{
+
+        const p = project(
+            d.x,
+            d.y
+        );
+
+        return {
+            x:p[0],
+            y:p[1]
+        };
+
+    });
+
+
+    const minX = d3.min(points,d=>d.x);
+    const maxX = d3.max(points,d=>d.x);
+
+    const minY = d3.min(points,d=>d.y);
+    const maxY = d3.max(points,d=>d.y);
+
+
+
+    const treeWidth =
+        maxX - minX;
+
+    const treeHeight =
+        maxY - minY;
+
+
+
+    const padding = 120;
+
+
+    const scale = Math.min(
+
+        (width - padding) / treeWidth,
+
+        (height - padding) / treeHeight,
+
+        1
+
+    );
+
+
+
+    const centreX =
+        (minX + maxX) / 2;
+
+
+    const centreY =
+        (minY + maxY) / 2;
+
+
+
+    g.attr(
+        "transform",
+        `
+        translate(
+            ${width/2},
+            ${height/2 + 20}
+        )
+        scale(${scale})
+        translate(
+            ${-centreX},
+            ${-centreY}
+        )
+        `
+    );
+
+}
+// =====================================================
 // Colour inheritance
-// --------------------------------
+// =====================================================
 
-function getEmotionColour(d){
+function getEmotionColour(node){
 
-    let current = d;
+    let current = node;
 
     while(current){
 
@@ -915,45 +1293,173 @@ function getEmotionColour(d){
 
 }
 
+// =====================================================
+// Positioning
+// =====================================================
+function positionSVG(){
 
-// --------------------------------
-// Coordinate conversion
-// --------------------------------
+    const headerHeight =
+        document.getElementById("header").offsetHeight;
 
-function project(angle, radius){
+    const width =
+        window.innerWidth;
 
-    return [
+    const height =
+        window.innerHeight - headerHeight;
 
-        Math.cos(angle - Math.PI / 2) * radius,
 
-        Math.sin(angle - Math.PI / 2) * radius
+    g.attr(
+        "transform",
+        `
+        translate(
+            ${width/2},
+            ${headerHeight + height/2}
+        )
+        `
+    );
 
-    ];
+}
+// =====================================================
+// Spacing
+// =====================================================
+
+function applyDepthSpacing(){
+
+    const radius = getRadius();
+
+    root.each(d=>{
+
+        switch(d.depth){
+
+            case 0:
+                d.y = 0;
+                break;
+
+            case 1:
+                d.y = radius * 0.32;
+                break;
+
+            case 2:
+                d.y = radius * 0.62;
+                break;
+
+            case 3:
+                d.y = radius * 0.88;
+                break;
+
+            case 4:
+                d.y = radius * 1.12;
+                break;
+
+            default:
+                d.y = radius * 1.55;
+
+        }
+
+    });
 
 }
 
 
-// --------------------------------
-// Update drawing
-// --------------------------------
+// =====================================================
+// Score
+// =====================================================
 
-function update(){
+function updateScore(){
 
-    tree(root);
+    let score = 0;
 
 
-    const nodes = root.descendants();
+    selected.forEach(d=>{
+
+        score += d.data.score;
+
+    });
+
+
+    document.getElementById("score").textContent =
+        score > 0
+        ? "+" + score
+        : score;
+
+
+    return score;
+
+}
+
+
+// =====================================================
+// Message
+// =====================================================
+
+function updateMessage(score){
+
+    let message;
+
+
+    if(score >= 8){
+
+        message = "A very positive emotional state.";
+
+    }
+    else if(score >= 4){
+
+        message = "You're doing well.";
+
+    }
+    else if(score > 0){
+
+        message = "A slightly positive balance.";
+
+    }
+    else if(score === 0){
+
+        message = "Balanced emotions.";
+
+    }
+    else if(score > -2){
+
+        message = "Do something that sparks joy.";
+
+    }
+    else if(score > -4){
+
+        message = "Be kind to yourself.";
+
+    }
+    else if(score > -8){
+
+        message = "Take time to rest and recharge.";
+
+    }
+    else{
+
+        message = "Consider talking with someone you trust.";
+
+    }
+
+
+    document.getElementById("message").textContent =
+        message;
+
+}
+
+
+
+// =====================================================
+// Links
+// =====================================================
+
+function updateLinks(){
 
     const links = root.links();
 
 
-
-    // Links
-
     const link = g.selectAll(".link")
         .data(
             links,
-            d => d.target.data.name + d.target.depth
+            d =>
+                d.target.data.id
         );
 
 
@@ -967,44 +1473,61 @@ function update(){
 
         .transition()
 
-        .duration(600)
+        .duration(500)
 
-        .attr("x1",d => project(
-            d.source.x,
-            d.source.y
-        )[0])
+        .attr("x1",d =>
+            project(
+                d.source.x,
+                d.source.y
+            )[0]
+        )
 
-        .attr("y1",d => project(
-            d.source.x,
-            d.source.y
-        )[1])
+        .attr("y1",d =>
+            project(
+                d.source.x,
+                d.source.y
+            )[1]
+        )
 
-        .attr("x2",d => project(
-            d.target.x,
-            d.target.y
-        )[0])
+        .attr("x2",d =>
+            project(
+                d.target.x,
+                d.target.y
+            )[0]
+        )
 
-        .attr("y2",d => project(
-            d.target.x,
-            d.target.y
-        )[1])
+        .attr("y2",d =>
+            project(
+                d.target.x,
+                d.target.y
+            )[1]
+        )
 
         .attr("stroke","#cccccc")
+
         .attr("stroke-width",2);
 
 
     link.exit().remove();
 
+}
 
 
-    // Nodes
+
+// =====================================================
+// Nodes
+// =====================================================
+
+function updateNodes(){
+
+    const nodes = root.descendants();
+
 
     const node = g.selectAll(".node")
         .data(
             nodes,
-            d => d.data.name + d.depth
+            d => d.data.id
         );
-
 
 
     const enter = node.enter()
@@ -1016,9 +1539,8 @@ function update(){
         .on("click",(event,d)=>{
 
 
-            // Expand/collapse any level
-
             if(d.children || d._children){
+
 
                 if(d.children){
 
@@ -1027,6 +1549,7 @@ function update(){
                     d.children = null;
 
                 }
+
                 else{
 
                     d.children = d._children;
@@ -1034,6 +1557,7 @@ function update(){
                     d._children = null;
 
                 }
+
 
                 update();
 
@@ -1043,30 +1567,36 @@ function update(){
 
 
 
-            // Select leaf emotions
-
             if(d.depth > 1){
+
 
                 if(selected.has(d)){
 
                     selected.delete(d);
 
                 }
+
                 else{
 
                     selected.add(d);
 
                 }
 
+
                 update();
 
             }
+
 
         });
 
 
 
     enter.append("circle");
+
+
+    enter.append("text");
+
 
 
     enter.select("circle")
@@ -1085,60 +1615,38 @@ function update(){
             if(d.depth === 2)
                 return 38;
 
-            return 30;
+            return 28;
 
         })
-        /*
+
         .attr("fill",d=>{
 
+
             if(selected.has(d))
-                return "#222";
-
-            return d3.color(
-                getEmotionColour(d)
-            )
-            .brighter(d.depth * 0.25);
-
-        })*/
-        .attr("fill", d => {
-
-            if (selected.has(d))
                 return "#555";
 
-            const c = d3.hsl(getEmotionColour(d));
 
-            const level = Math.max(0, d.depth - 1);
+            const c = d3.hsl(
+                getEmotionColour(d)
+            );
 
-            // Increase saturation
-            c.s = Math.min(1, c.s * (1 + level * 0.23));
 
-            // Slightly reduce lightness
-            c.l = Math.max(0, c.l - level * 0.02);
+            c.l =
+                Math.min(
+                    0.85,
+                    c.l + d.depth * 0.03
+                );
+
 
             return c.toString();
 
-        })
-        .attr("stroke",d=>{
-
-            if(selected.has(d))
-                return "#000";
-
-            return "#fff";
 
         })
 
-        .attr("stroke-width",d=>{
+        .attr("stroke","#fff")
 
-            if(selected.has(d))
-                return 5;
+        .attr("stroke-width",2);
 
-            return 2;
-
-        });
-
-
-
-    enter.append("text");
 
 
     enter.select("text")
@@ -1147,14 +1655,7 @@ function update(){
 
         .attr("dy",5)
 
-        .attr("font-size",d=>{
-
-            if(d.depth === 1)
-                return "17px";
-
-            return "14px";
-
-        })
+        .attr("text-anchor","middle")
 
         .text(d=>d.data.name);
 
@@ -1170,12 +1671,16 @@ function update(){
             "transform",
             d=>{
 
-                const p = project(
-                    d.x,
-                    d.y
-                );
+                const p =
+                    project(
+                        d.x,
+                        d.y
+                    );
 
-                return `translate(${p[0]},${p[1]})`;
+
+                return `
+                translate(${p[0]},${p[1]})
+                `;
 
             }
         );
@@ -1184,96 +1689,81 @@ function update(){
 
     node.exit().remove();
 
-
-
-    // --------------------------------
-    // Emotional balance
-    // --------------------------------
-
-    let positive = 0;
-    let negative = 0;
-
-    selected.forEach(d => {
-
-        if (d.data.score > 0)
-            positive += d.data.score;
-        else
-            negative += Math.abs(d.data.score);
-
-    });
-
-    g.selectAll(".centre").remove();
-
-    g.append("text")
-        .attr("class", "centre balance")
-        .attr("text-anchor", "middle")
-        .attr("y", -15)
-        .text(`${positive}/${negative}`);
-
-    let message = "";
-
-    if (positive < negative) {
-
-        const ratio = positive / negative;
-
-        if (ratio < 0.25)
-            message = "Reach out to someone";
-
-        else if (ratio < 0.5)
-            message = "Go for a walk. Exercise";
-
-        else if (ratio < 0.75)
-            message = "Be kind to yourself";
-
-        else
-            message = "Things will improve";
-
-    }
-    else if (positive > negative) {
-
-        message = "You're doing well";
-
-    }
-    else {
-
-        message = "Perfectly balanced";
-
-    }
-
-    g.append("text")
-        .attr("class", "centre subtitle")
-        .attr("text-anchor", "middle")
-        .attr("y", 22)
-        .text(message);
-
 }
 
 
 
+// =====================================================
+// Main update
+// =====================================================
+
+function update(){
+
+    positionSVG();
+    
+    tree(root);
+
+
+    applyDepthSpacing();
+
+
+    fitToScreen();
+
+
+    updateLinks();
+
+
+    updateNodes();
+
+
+    const score = updateScore();
+
+
+    updateMessage(score);
+
+}
+
+
+// Initial draw
+
 update();
 
-const infoButton = document.getElementById("infoButton");
-
-const infoDialog = document.getElementById("infoDialog");
-
-const closeDialog = document.getElementById("closeDialog");
 
 
-infoButton.addEventListener("click", () => {
+// =====================================================
+// Info dialog
+// =====================================================
+
+const infoButton =
+    document.getElementById("infoButton");
+
+
+const infoDialog =
+    document.getElementById("infoDialog");
+
+
+const closeDialog =
+    document.getElementById("closeDialog");
+
+
+
+infoButton.addEventListener("click",()=>{
 
     infoDialog.classList.remove("hidden");
 
 });
 
 
-closeDialog.addEventListener("click", () => {
+
+closeDialog.addEventListener("click",()=>{
 
     infoDialog.classList.add("hidden");
 
 });
 
 
-infoDialog.addEventListener("click", (e) => {
+
+infoDialog.addEventListener("click",e=>{
 
     if(e.target === infoDialog){
 
@@ -1282,6 +1772,49 @@ infoDialog.addEventListener("click", (e) => {
     }
 
 });
+
+
+
+// =====================================================
+// Collapse all button
+// =====================================================
+
+function collapseAll(node){
+
+    if(node.children){
+
+        node.children.forEach(collapseAll);
+
+        node._children = node.children;
+
+        node.children = null;
+
+    }
+
+}
+
+
+document
+.getElementById("collapseAll")
+.addEventListener("click",()=>{
+
+
+    root.children.forEach(collapseAll);
+
+
+    selected.clear();
+
+
+    update();
+
+
+});
+
+
+
+// =====================================================
+// Responsive
+// =====================================================
 
 window.addEventListener(
     "resize",
