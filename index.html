@@ -1383,22 +1383,44 @@ function updateNodes(){
             return 28;
         })
 
-        .attr("fill",d=>{
-        if(selected.has(d.data.id))
-            return "#555";
-            const c = d3.hsl(
-                getEmotionColour(d)
-            );
-            c.l =
-                Math.min(
-                    0.85,
-                    c.l + d.depth * 0.03
-                );
+.   attr("fill", d => {
 
-            return c.toString();
+    if (selected.has(d.data.id))
+        return "#555";
 
-        })
+    const c = d3.hsl(getEmotionColour(d));
 
+    switch (d.depth) {
+
+        case 1:
+            // Primary emotion
+            c.s *= 0.90;
+            c.l += 0.03;
+            break;
+
+        case 2:
+            // Secondary emotion
+            c.s *= 1.05;
+            c.l -= 0.02;
+            break;
+
+        case 3:
+            // Leaf emotion
+            c.s *= 1.20;
+            c.l -= 0.06;
+            break;
+
+        default:
+            break;
+
+    }
+
+    c.s = Math.max(0, Math.min(1, c.s));
+    c.l = Math.max(0, Math.min(1, c.l));
+
+    return c.toString();
+
+})
         .attr("stroke","#fff")
         .attr("stroke-width",2);
 
